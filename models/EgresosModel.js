@@ -25,7 +25,7 @@ const Egresos = dbConnection.define("egresos", {
         allowNull: false,
         validate: {
             notEmpty: true
-        } 
+        }
     },
     valor: {
         type: DataTypes.FLOAT,
@@ -40,8 +40,19 @@ const Egresos = dbConnection.define("egresos", {
         validate: {
             notEmpty: true
         }
+    },
+    usuarioId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+        references: {
+            model: Usuario,
+            key: 'id'
+        }
     }
-},{
+}, {
     freezeTableName: true
 })
 

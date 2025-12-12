@@ -47,7 +47,7 @@ export const registroUsuario = async(req, res)=>{
 export const modificarUsuario = async (req, res) => {
     const usuario = await Usuario.findOne({
         where: {
-            UUID: req.params.id
+            id: req.params.id
         }    
     })
 

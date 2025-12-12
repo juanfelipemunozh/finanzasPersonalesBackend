@@ -18,9 +18,20 @@ const Concepto = dbConnection.define("conceptos", {
         allowNull: false,
         validate: {
             notEmpty: true
-        } 
+        }
+    },
+    usuarioId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+        references: {
+            model: Usuario,
+            key: 'id'
+        }
     }
-},{
+}, {
     freezeTableName: true
 })
 

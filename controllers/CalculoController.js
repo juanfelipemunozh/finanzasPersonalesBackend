@@ -14,9 +14,15 @@ export const obtenerBalance = async (req, res) => {
                 return;
             }
 
+            const usuarioId = req.usuario.id;
+
             try {
-                let ingresos = await Ingresos.sum('valor');
-                let egresos = await Egresos.sum('valor');
+                let ingresos = await Ingresos.sum('valor', 
+                    { where: { usuarioId: usuarioId } }
+                )
+                let egresos = await Egresos.sum('valor',
+                    { where: { usuarioId: usuarioId } }
+                )
 
                 let resultado = ingresos - egresos;
                 res.status(200).json(resultado);

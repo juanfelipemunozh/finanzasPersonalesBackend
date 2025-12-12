@@ -5,11 +5,11 @@ import argon2 from "argon2";
 
 export const confirmarUsuario = async (req, res) => {
 
-    const { token } = req.params;
+    const { id } = req.params;
 
     const confirmarUsuario = await Usuario.findOne({
         where: {
-            token: token
+            token: id
         }
     });
 
@@ -22,6 +22,7 @@ export const confirmarUsuario = async (req, res) => {
         confirmarUsuario.token = null
         confirmarUsuario.confirmado = true
         await confirmarUsuario.save();
+        return res.status(200).json({ msg: "Usuario confirmado correctamente" })
 
     } catch (error) {
         return res.status(404).json({ msg: error.message })
@@ -32,7 +33,7 @@ export const confirmarUsuario = async (req, res) => {
 export const autenticarUsuario = async (req, res) => {
 
     try {
-        const { correo} = req.body;
+        const { correo } = req.body;
 
         const usuario = await Usuario.findOne({
             where: {
@@ -59,7 +60,7 @@ export const autenticarUsuario = async (req, res) => {
         res.json({
             usuario,
             msg: "Usuario autenticado",
-            token: generarJWT(usuario.UUID)
+            token: generarJWT(usuario.id)
         })
 
     }   

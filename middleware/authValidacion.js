@@ -15,6 +15,12 @@ const checkAuth = async (req, res, next) => {
   
     try {
       jwtPayload = jwt.verify(token, process.env.JWT_SECRET);
+
+      req.usuario = { 
+        id: jwtPayload.id
+    
+       };
+
       res.locals.jwtPayload = jwtPayload;
     } catch (error) {
       return res.status(401).json({ msg: 'Usuario no autorizado' });
@@ -22,7 +28,9 @@ const checkAuth = async (req, res, next) => {
   
     const { id } = jwtPayload;
   
-    const newToken = jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const newToken = jwt.sign({ id }, 
+      process.env.JWT_SECRET, 
+      { expiresIn: '1h' });
     res.setHeader('token', newToken);
   
     next();

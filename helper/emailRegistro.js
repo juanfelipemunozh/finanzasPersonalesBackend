@@ -14,14 +14,14 @@ const emailRegistro = async (datos) => {
     const { correo, nombreCompleto, token } = datos;    
     // Enviar el email
     const info = await transport.sendMail({
-      from: "AEC - Administrador de ECommerce Articulos",
+      from: "Control Financiero",
       to: correo,
       subject: 'Comprueba tu cuenta en AEC',
       text: 'Comprueba tu cuenta en AEC',
-      html: `<p>Hola: ${nombreCompleto}, comprueba tu cuenta en AEC.</p>
+      html: `<p>Hola: ${nombreCompleto}, comprueba tu cuenta en Control Financiero.</p>
                <p> Tu cuenta ya esta lista, solo debes comprobarla en el siguiente enlace:
                
-               <a href="${process.env.FRONTEND_URL}/api/auth/${token}">Comprobar Cuenta</a></p>
+               <a href="${process.env.FRONTEND_URL}/auth/${token}">Comprobar Cuenta</a></p>
 
                <p>Si tu no creaste esta cuenta, puedes ignorar este mensaje</p>
                `

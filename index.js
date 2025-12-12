@@ -55,10 +55,61 @@ import Concepto from "./models/ConceptoModel.js";
 import GastosFijos from "./models/GastosFijosModel.js"
 import session from "express-session";
 
+// Un usuario tiene muchos ingresos
+Usuario.hasMany(Ingresos, {
+    foreignKey: "usuarioId",
+    sourceKey: "id"
+});
+
+// Un ingreso pertenece a un usuario
+Ingresos.belongsTo(Usuario, {
+    foreignKey: "usuarioId",
+    targetKey: "id"
+});
+
+
+// Un usuario tiene muchos egresos
+Usuario.hasMany(Egresos, {
+    foreignKey: "usuarioId",
+    sourceKey: "id"
+});
+
+// Un egresos pertenece a un usuario
+Egresos.belongsTo(Usuario, {
+    foreignKey: "usuarioId",
+    targetKey: "id"
+});
+
+
+// Un usuario tiene muchos conceptos
+Usuario.hasMany(Concepto, {
+    foreignKey: "usuarioId",
+    sourceKey: "id"
+});
+
+// Un concepto pertenece a un usuario
+Concepto.belongsTo(Usuario, {
+    foreignKey: "usuarioId",
+    targetKey: "id"
+});
+
+
+// Un usuario tiene muchos GastosFijos
+Usuario.hasMany(GastosFijos, {
+    foreignKey: "usuarioId",
+    sourceKey: "id"
+});
+
+// Un GastosFijos pertenece a un usuario
+GastosFijos.belongsTo(Usuario, {
+    foreignKey: "usuarioId",
+    targetKey: "id"
+});
 
 (async()=>{
     await dbConnection.sync()
-})();  */ 
+})();   
+*/
 
 app.use("/api", usuarioRoutes);
 app.use("/api", authRoutes);

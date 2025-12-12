@@ -4,24 +4,28 @@ import Concepto from "../models/ConceptoModel.js"
 export const registrarConcepto = async (req, res) => {
     const { concepto } = req.body;
 
+    const usuarioId = req.usuario.id;
+    //console.log('Usuario ID desde el token:', usuarioId);
+
     const validarConcepto = await Concepto.findOne({
         where: {
             concepto: concepto
         }
     })
 
-    if(validarConcepto){
-        return res.status(401).json({msg: "Concepto ya se encuentra registrado"})
+    if (validarConcepto) {
+        return res.status(401).json({ msg: "Concepto ya se encuentra registrado" })
     }
 
     try {
         const nuevoConcepto = await Concepto.create({
-            concepto: concepto
+            concepto: concepto,
+            usuarioId: usuarioId
         })
 
-        res.status(200).json({msg: "Concepto creado exitosamente"})
+        res.status(200).json({ msg: "Concepto creado exitosamente" })
     } catch (error) {
-        res.status(400).json({msg: error.message})
+        res.status(400).json({ msg: error.message })
     }
 }
 
@@ -29,11 +33,13 @@ export const registrarConcepto = async (req, res) => {
 export const obtenerConceptos = async (req, res) => {
     try {
         const resultado = await Concepto.findAll({
-            attributes: ["UUID", "concepto"]
+            attributes: ["UUID", "concepto"],
+            where: {
+                usuarioId: req.usuario.id}
         })
         res.status(200).json(resultado)
     } catch (error) {
-        res.status(400).json({msg: error.message})
+        res.status(400).json({ msg: error.message })
     }
 }
 
@@ -41,37 +47,41 @@ export const obtenerConceptos = async (req, res) => {
 export const obtenerUnConcepto = async (req, res) => {
     const validarConcepto = await Concepto.findOne({
         where: {
-            UUID: req.params.id
+            UUID: req.params.id,
+            usuarioId: req.usuario.id
         }
     })
 
-    if(!validarConcepto){
-        return res.status(404).json({msg: "Concepto no encontrado"})
+    if (!validarConcepto) {
+        return res.status(404).json({ msg: "Concepto no encontrado" })
     }
 
     try {
         const resultado = await Concepto.findOne({
-            attributes: ['UUID','concepto'],
+            attributes: ['UUID', 'concepto'],
             where: {
-                UUID: req.params.id
+                UUID: req.params.id,
+                usuarioId: req.usuario.id
             }
         })
         res.status(200).json(resultado)
     } catch (error) {
-        res.status(400).json({msg: error.message})
+        res.status(400).json({ msg: error.message })
     }
 }
 
 
 export const modificarConcepto = async (req, res) => {
+
     const validarConcepto = await Concepto.findOne({
         where: {
-            UUID: req.params.id
+            UUID: req.params.id,
+            usuarioId: req.usuario.id
         }
     })
 
-    if(!validarConcepto){
-        return res.status(404).json({msg: "Concepto no encontrado"})
+    if (!validarConcepto) {
+        return res.status(404).json({ msg: "Concepto no encontrado" })
     }
 
     const { concepto } = req.body
@@ -84,9 +94,9 @@ export const modificarConcepto = async (req, res) => {
                 id: validarConcepto.id
             }
         })
-        res.status(200).json({msg: "Concepto actualizado correctamente"})
+        res.status(200).json({ msg: "Concepto actualizado correctamente" })
     } catch (error) {
-        res.status(400).json({msg: error.message})
+        res.status(400).json({ msg: error.message })
     }
 }
 
@@ -94,12 +104,13 @@ export const modificarConcepto = async (req, res) => {
 export const eliminarConcepto = async (req, res) => {
     const validarConcepto = await Concepto.findOne({
         where: {
-            UUID: req.params.id
+            UUID: req.params.id,
+            usuarioId: req.usuario.id 
         }
     })
 
-    if(!validarConcepto){
-        return res.status(404).json({msg: "Concepto no encontrado"})
+    if (!validarConcepto) {
+        return res.status(404).json({ msg: "Concepto no encontrado" })
     }
 
     try {
@@ -108,8 +119,8 @@ export const eliminarConcepto = async (req, res) => {
                 id: validarConcepto.id
             }
         })
-        res.status(200).json({msg: "Concepto eliminado correctamente"})
+        res.status(200).json({ msg: "Concepto eliminado correctamente" })
     } catch (error) {
-        res.status(400).json({msg: error.message})
+        res.status(400).json({ msg: error.message })
     }
 }

@@ -4,12 +4,15 @@ import GastosFijos from "../models/GastosFijosModel.js"
 export const registrarGastoFijo = async (req, res) => {
     const { concepto, valor, observacion, fecha } = req.body;
 
+    const usuarioId = req.usuario.id;
+
     try {
         await GastosFijos.create({
             concepto: concepto,
             valor: valor,
             observacion: observacion,
-            fecha: fecha
+            fecha: fecha,
+            usuarioId: usuarioId
         })
         res.status(200).json({ msg: "Registro exitoso" })
     } catch (error) {
@@ -21,7 +24,10 @@ export const obtenerGastosFijos = async (req, res) => {
 
     try {
         const respuesta = await GastosFijos.findAll({
-            attributes: ['UUID', 'concepto', 'valor', 'observacion', 'fecha']
+            attributes: ['UUID', 'concepto', 'valor', 'observacion', 'fecha'],
+            where: {
+                usuarioId: req.usuario.id
+            }
         })
         res.status(200).json(respuesta)
     } catch (error) {
@@ -33,7 +39,8 @@ export const obtenerGastosFijos = async (req, res) => {
 export const obtenerUnGastoFijo = async (req, res) => {
     const validarGasto = await GastosFijos.findOne({
         where: {
-            UUID: req.params.id
+            UUID: req.params.id,
+            usuarioId: req.usuario.id
         }
     })
 
@@ -45,7 +52,8 @@ export const obtenerUnGastoFijo = async (req, res) => {
         const respuesta = await GastosFijos.findOne({
             attributes: ['UUID', 'valor', 'concepto', 'observacion', 'fecha'],
             where: {
-                UUID: req.params.id
+                UUID: req.params.id,
+                usuarioId: req.usuario.id
             }
         })
         res.status(200).json(respuesta)
@@ -59,7 +67,8 @@ export const modificarGastoFijo = async (req, res) => {
 
     const validarGasto = await GastosFijos.findOne({
         where: {
-            UUID: req.params.id
+            UUID: req.params.id,
+            usuarioId: req.usuario.id
         }
     })
 
@@ -88,7 +97,8 @@ export const modificarGastoFijo = async (req, res) => {
 export const eliminarGastoFijo = async (req, res) => {
     const validarGasto = await GastosFijos.findOne({
         where: {
-            UUID: req.params.id
+            UUID: req.params.id,
+            usuarioId: req.usuario.id
         }
     })
 

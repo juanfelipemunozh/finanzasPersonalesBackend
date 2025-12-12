@@ -5,6 +5,14 @@ import generarId from "../helper/generarId.js"
 const { DataTypes } = Sequelize;
 
 const Usuario = dbConnection.define("usuarios", {
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+        validate: {
+            notEmpty: true
+        }
+    },
     UUID: {
         type: DataTypes.STRING,
         defaultValue: DataTypes.UUIDV4,

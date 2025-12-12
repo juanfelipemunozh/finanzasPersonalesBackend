@@ -3,7 +3,7 @@ import { autenticarUsuario, confirmarUsuario } from "../controllers/AuthControll
 
 const router = express.Router();
 
-router.get("/auth/:token", confirmarUsuario);
+router.get("/auth/:id", confirmarUsuario);
 router.post("/auth/", autenticarUsuario);
 
 export default router;

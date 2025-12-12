@@ -25,7 +25,7 @@ const Ingresos = dbConnection.define("ingresos", {
         allowNull: false,
         validate: {
             notEmpty: true
-        } 
+        }
     },
     valor: {
         type: DataTypes.FLOAT,
@@ -33,8 +33,19 @@ const Ingresos = dbConnection.define("ingresos", {
         validate: {
             notEmpty: true
         }
+    },
+    usuarioId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+        references: {
+            model: Usuario,
+            key: 'id'
+        }
     }
-},{
+}, {
     freezeTableName: true
 })
 

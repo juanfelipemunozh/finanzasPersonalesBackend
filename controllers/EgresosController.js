@@ -5,12 +5,15 @@ import Egresos from "../models/EgresosModel.js";
 export const registrarEgreso = async (req, res) => {
     const { fecha, concepto, valor, observacion } = req.body;
 
+    const usuarioId = req.usuario.id;
+
     try {
         const nuevoEgreso = await Egresos.create({
             fecha: fecha,
             concepto: concepto,
             valor: valor,
-            observacion: observacion
+            observacion: observacion,
+            usuarioId: usuarioId
         })
         res.status(200).json({msg: "Egreso registrado correctamente"})
     } catch (error) {
@@ -22,7 +25,10 @@ export const registrarEgreso = async (req, res) => {
 export const obtenerEgresos = async (req, res) => {
     try {
         const resultado = await Egresos.findAll({
-            attributes: ["UUID","fecha","concepto","valor","observacion"]
+            attributes: ["UUID","fecha","concepto","valor","observacion"],
+            where: {    
+                usuarioId: req.usuario.id
+            }
         })
         res.status(201).json(resultado)
     } catch (error) {
@@ -33,7 +39,8 @@ export const obtenerEgresos = async (req, res) => {
 export const obtenerUnEgreso = async (req, res) => {
     const egreso = await Egresos.findOne({
         where: {
-            UUID: req.params.id
+            UUID: req.params.id,
+            usuarioId: req.usuario.id
         }
     })
 
@@ -45,7 +52,8 @@ export const obtenerUnEgreso = async (req, res) => {
         const resultado = await Egresos.findOne({
             attributes: ['UUID','valor','concepto','observacion','fecha'],
             where: {
-                UUID: req.params.id
+                UUID: req.params.id,
+                usuarioId: req.usuario.id
             }
         })
         res.status(200).json(resultado)
@@ -58,7 +66,8 @@ export const obtenerUnEgreso = async (req, res) => {
 export const modificarEgreso = async (req, res) => {
     const egreso = await Egresos.findOne({
         where: {
-            UUID: req.params.id
+            UUID: req.params.id,
+            usuarioId: req.usuario.id
         }
     })
 
